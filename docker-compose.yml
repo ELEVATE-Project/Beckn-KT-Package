@@ -1,0 +1,201 @@
+version: '3'
+services:
+    zookeeper:
+        image: 'confluentinc/cp-zookeeper:latest'
+        attach: false
+        container_name: elevate-zookeeper
+        ports:
+            - '2181:2181'
+        environment:
+            - ZOOKEEPER_CLIENT_PORT=2181
+            - ZOOKEEPER_TICK_TIME=2000
+        networks:
+            - elevate_net
+            - elevate_elastic
+        logging:
+            driver: none
+
+    kafka:
+        image: confluentinc/cp-kafka:latest
+        attach: false
+        container_name: elevate-kafka
+        ports:
+            - '9092:9092'
+            - '29092:29092'
+        environment:
+            KAFKA_BROKER_ID: 1
+            KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+            KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+            KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+            KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+        depends_on:
+            - zookeeper
+        networks:
+            - elevate_net
+            - elevate_elastic
+        logging:
+            driver: none
+
+    kafka-connect:
+        image: confluentinc/cp-kafka-connect:latest
+        hostname: kafka-connect
+        container_name: kafka-connect
+        depends_on:
+            - zookeeper
+            - kafka
+        ports:
+            - '8083:8083'
+        networks:
+            - elevate_net
+            - elevate_elastic
+        environment:
+            CONNECT_BOOTSTRAP_SERVERS: 'kafka:9092'
+            CONNECT_REST_ADVERTISED_HOST_NAME: kafka-connect
+            CONNECT_REST_PORT: 8083
+            CONNECT_GROUP_ID: compose-connect-group
+            CONNECT_CONFIG_STORAGE_TOPIC: docker-connect-configs
+            CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+            CONNECT_OFFSET_STORAGE_TOPIC: docker-connect-offsets
+            CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+            CONNECT_STATUS_STORAGE_TOPIC: docker-connect-status
+            CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+            CONNECT_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+            CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+        logging:
+            driver: json-file
+
+    mongo:
+        image: 'mongo:4.4.14'
+        attach: false
+        container_name: elevate-mongo
+        restart: 'always'
+        ports:
+            - '27017:27017'
+        networks:
+            - elevate_net
+        volumes:
+            - mongo-data:/data/db
+        logging:
+            driver: none
+    redis:
+        image: 'redis:7.0.0'
+        attach: false
+        container_name: elevate-redis
+        restart: 'always'
+        expose:
+            - '6379'
+        networks:
+            - elevate_net
+        logging:
+            driver: none
+    elasticsearch:
+        container_name: elevate-elasticsearch
+        attach: false
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.5.2
+        ports:
+            - '9200:9200'
+            - '9300:9300'
+        environment:
+            - 'ES_JAVA_OPTS=-Xms1g -Xmx1g'
+            - 'discovery.type=single-node'
+            - 'xpack.security.enabled=false'
+        networks:
+            - elevate_elastic
+        logging:
+            driver: none
+
+    kibana:
+        container_name: elevate-kibana
+        attach: false
+        image: docker.elastic.co/kibana/kibana:8.5.2
+        ports:
+            - '5601:5601'
+        environment:
+            - 'ELASTICSEARCH_HOSTS=http://elasticsearch:9200'
+        depends_on:
+            - elasticsearch
+        networks:
+            - elevate_elastic
+        logging:
+            driver: none
+
+    bap:
+        build: './mentoring-bap-service/'
+        container_name: elevate-bap
+        image: elevate/bap:1.0
+        volumes:
+            - ./mentoring-bap-service/src/:/var/src
+        ports:
+            - '3000:3000'
+        command: ['nodemon', 'app.js']
+        depends_on:
+            - redis
+        networks:
+            - elevate_net
+
+    bpp:
+        build: './bpp1/mentoring-bpp-service/'
+        container_name: elevate-bpp
+        image: elevate/bpp:1.0
+        volumes:
+            - ./bpp1/mentoring-bpp-service/src/:/var/src
+        ports:
+            - '3001:3001'
+        command: ['nodemon', 'app.js']
+        depends_on:
+            - redis
+            - mongo
+        networks:
+            - elevate_net
+
+    bpp-catalog:
+        build: './bpp1/mentoring-bpp-catalog-service/'
+        container_name: elevate-catalog
+        image: elevate/catalog:1.0
+        volumes:
+            - ./bpp1/mentoring-bpp-catalog-service/src/:/var/src
+        ports:
+            - '3002:3002'
+        command: ['nodemon', 'app.js']
+        depends_on:
+            - redis
+            - kafka
+        networks:
+            - elevate_net
+            - elevate_elastic
+
+    bg-sim:
+        build: './bg-sim/'
+        image: elevate/bg-sim:1.0
+        container_name: elevate-bg-sim
+        volumes:
+            - ./bg-sim/:/usr/src/app/
+        ports:
+            - '3003:3003'
+        command: ['nodemon', 'app.js']
+
+    mentoring-sim:
+        build: './bpp1/mentoring-sim/'
+        image: elevate/mentoring-sim:2.0
+        container_name: mentoring-sim
+        volumes:
+            - ./bpp1/mentoring-sim/:/usr/src/app/
+        ports:
+            - '3010:3010'
+        command: ['nodemon', 'app.js']
+        networks:
+            - elevate_net
+            - elevate_elastic
+
+networks:
+    elevate_net:
+        external: false
+    elevate_elastic:
+        external: false
+volumes:
+    zookeeper-data:
+    kafka-data:
+    mongo-data:
