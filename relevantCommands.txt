@@ -1,0 +1,10 @@
+curl -X POST http://localhost:3010/create-session
+
+curl -X GET http://localhost:8083/connector-plugins
+
+cd bpp1/mentoring-bpp-catalog-service/src/scripts/kafkaConnectorConfigs && \
+node createAgentConnector.js && \
+node createFulfillmentConnector.js && \
+node createProviderConnector.js && \
+node createSessionConnector.js && \
+cd ../../../../../

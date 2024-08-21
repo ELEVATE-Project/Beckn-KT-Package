@@ -42,6 +42,7 @@ services:
     kafka-connect:
         build: '.'
         image: elevate/kafka-connect:1.0.0
+        attach: false
         hostname: kafka-connect
         container_name: kafka-connect
         depends_on:
