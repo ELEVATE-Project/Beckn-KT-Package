@@ -11,14 +11,11 @@ exports.searchItemListGenerator = async (transactionId, type, fetchedItems) => {
 			items = await Promise.all(
 				itemList.map(async (itemId) => {
 					const item = await cacheGet(`SESSION:${itemId}`)
-					console.log('ITEM: ', item)
 					return item
 				})
 			)
 		} else items = fetchedItems
 
-		console.log('ITEMSSSSSSSSS: ', items)
-		console.log('TYPEEEEEEE: ', type)
 		if (type === 'session') {
 			return items
 		} else if (type === 'mentor') {

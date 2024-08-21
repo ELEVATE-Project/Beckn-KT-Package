@@ -41,7 +41,6 @@ exports.search = async (req, res) => {
 				},
 			})
 		} else {
-			console.log('HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE')
 			if (!isMentorSearch && !isSessionSearch) return failedRes('Either mentor or session name must be provided')
 			if (isMentorSearch && isSessionSearch)
 				return failedRes("Hybrid searching using both mentor and session names isn't currently supported")
@@ -56,7 +55,6 @@ exports.search = async (req, res) => {
 				try {
 					const listName = type === 'session' ? 'session' : 'mentor'
 					const items = await searchItemListGenerator(transactionId, type)
-					console.log('HHHHHHHHHHHHHHHHHHHHH', items)
 					res.status(200).json({
 						status: true,
 						message: 'Search Success',

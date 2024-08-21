@@ -109,7 +109,6 @@ const catalogHandler = async (providers, transactionId, bppMongoId) => {
 				// 	body: session,
 				// 	id: itemId
 				//   })
-				console.log({ session, itemId })
 				await internalRequests.catalogPOST({
 					route: process.env.BAP_CATALOG_INDEX_SESSION_ROUTE,
 					body: { session, sessionId: itemId },
