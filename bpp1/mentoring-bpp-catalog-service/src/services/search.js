@@ -48,7 +48,7 @@ exports.getSession = async (sessionId, getAllProtocolObjects) => {
 	if (!sessionDoc.found) return null
 	if (!getAllProtocolObjects) return getSourceObject(sessionDoc)
 	const protocolObjects = await getprotocolObjectsFromSessions([sessionDoc])
-	console.log(protocolObjects)
+	/* console.log(protocolObjects) */
 	return await protocolResponseDTO(protocolObjects)
 }
 

@@ -4,7 +4,7 @@ const { contextBuilder } = require('@utils/contextBuilder')
 const { selectMessageDTO } = require('@dtos/selectMessage')
 const { requestBodyDTO } = require('@dtos/requestBody')
 const { externalRequests } = require('@helpers/requests')
-const { bppQueries } = require('@database/storage/bpp/queries')
+const { bppQueries } = require('@database/queries-psql/bpp')
 const { catalogService } = require('@services/catalog')
 const { getMessage, sendMessage, cacheGet } = require('@utils/redis')
 const { searchItemListGenerator } = require('@helpers/searchItemListGenerator')
@@ -22,6 +22,7 @@ exports.select = async (req, res) => {
 		const selectRequestBody = requestBodyDTO(context, message)
 
 		const bppMongoId = await cacheGet(`SESSION:BPP_ID:${itemId}`)
+		console.log('BPP MONGO ID: ', bppMongoId)
 		const bpp = await bppQueries.findById(bppMongoId)
 		if (!bpp) failedRes('Bpp Not Found')
 		await externalRequests.dsepPOST({
@@ -57,7 +58,7 @@ exports.onSelect = async (req, res) => {
 			defaults: { bppUri: bppUriFromContext },
 		})
 		const transactionId = context.transaction_id
-		const bppMongoId = bpp._id
+		const bppMongoId = bpp.id
 		const providers = [req.body.message.order.provider]
 		const isCatalogHandled = await catalogService.catalogHandler(providers, transactionId, bppMongoId)
 		if (isCatalogHandled) await sendMessage(`SELECT:${transactionId}`, `SELECT:${transactionId}`)
@@ -69,5 +70,6 @@ exports.onSelect = async (req, res) => {
 		})
 	} catch (err) {
 		console.log(err)
+		throw err
 	}
 }

@@ -48,10 +48,10 @@ const catalogHandler = async (providers, transactionId, bppMongoId) => {
 				name: provider.descriptor.name,
 			}
 			for (const item of provider.items) {
-				await internalRequests.catalogPOST({
+				/* await internalRequests.catalogPOST({
 					route: process.env.BAP_CATALOG_INDEX_RAW_SESSION_ROUTE,
 					body: { session: item, sessionId: item.id },
-				})
+				}) */
 				const itemId = item.id
 				const categoryIds = item.category_ids.map((categoryId) => {
 					return categoryId.replace(/ /g, '-').toLowerCase()
@@ -109,16 +109,18 @@ const catalogHandler = async (providers, transactionId, bppMongoId) => {
 				// 	body: session,
 				// 	id: itemId
 				//   })
-				await internalRequests.catalogPOST({
+				/* await internalRequests.catalogPOST({
 					route: process.env.BAP_CATALOG_INDEX_SESSION_ROUTE,
 					body: { session, sessionId: itemId },
-				})
-				const { storedItem } = await itemQueries.findOrCreate({
+				}) */
+				/* const { storedItem } = await itemQueries.findOrCreate({
 					where: { itemId },
 					defaults: { details: JSON.stringify(session), bppMongoId },
-				})
+				}) */
 				/* if (!response.status) throw 'Neo4j Item Injection Failed' */
-				// await cacheSave(`SESSION:BPP_ID:${itemId}`, bppMongoId)
+				console.log('ITEM ID: ', itemId)
+				console.log('BPP MONGO ID: ', bppMongoId)
+				await cacheSave(`SESSION:BPP_ID:${itemId}`, bppMongoId)
 				const sessionsList = await cacheGet(`SESSION_LIST:${transactionId}`)
 				if (!sessionsList) await cacheSave(`SESSION_LIST:${transactionId}`, [itemId])
 				else {

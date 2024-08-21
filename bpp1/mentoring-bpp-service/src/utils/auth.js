@@ -8,6 +8,14 @@ exports.createAuthorizationHeader = async (message) => {
 	const signature = await signMessage(signingString, process.env.PRIVATE_KEY || '')
 	const subscriberId = process.env.SUBSCRIBER_ID
 	const header = `Signature keyId="${subscriberId}|${process.env.UNIQUE_ID}|ed25519",algorithm="ed25519",created="${created}",expires="${expires}",headers="(created) (expires) digest",signature="${signature}"`
+	console.log('SIGNING LOGIC: ')
+	console.log({
+		header,
+		signature,
+		subscriberId,
+		signingString,
+	})
+
 	return header
 }
 

@@ -8,6 +8,7 @@ const urls = ['http://bpp:3001/bpp1/search'];
 
 app.post('/search', async (req, res) => {
 	const requestBody = req.body;
+	console.log('SEARCH BODY:', requestBody);
 
 	const requests = urls.map((url) => {
 		return axios

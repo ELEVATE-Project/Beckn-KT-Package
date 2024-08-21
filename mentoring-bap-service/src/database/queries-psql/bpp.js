@@ -22,8 +22,7 @@ const findOrCreate = async ({ where = {}, defaults = {} }) => {
 		const [bpp, created] = await Bpp.findOrCreate({ where: where, defaults: defaults })
 		if (created) console.log('New BPP Entry Created')
 		else console.log('Found Existing BPP')
-
-		return { bpp, isNew: created }
+		return { bpp: bpp.toJSON(), isNew: created }
 	} catch (err) {
 		console.log('BPP.findOrCreate: ', err)
 		throw err
@@ -46,7 +45,7 @@ const findByIds = async (bppIds) => {
 
 const findById = async (bppId) => {
 	try {
-		return await Bpp.findByPk(bppId)
+		return (await Bpp.findByPk(bppId)).toJSON()
 	} catch (err) {
 		console.log(err)
 		throw err
