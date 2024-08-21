@@ -4,7 +4,7 @@ const app = express();
 
 app.use(express.json());
 
-const urls = ['http://localhost:3001/endpoint1', 'http://localhost:3002/endpoint2', 'http://localhost:3003/endpoint3'];
+const urls = ['http://bpp:3001/bpp1/search'];
 
 app.post('/search', async (req, res) => {
 	const requestBody = req.body;

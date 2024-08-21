@@ -12,12 +12,12 @@ require('@utils/authentication')
 app.use(bodyParser.urlencoded({ extended: true, limit: '50MB' }))
 app.use(bodyParser.json({ limit: '50MB' }))
 app.use(cors())
-app.use('/osl-bap', require('@routes'))
+app.use('/bap', require('@routes'))
 
 app.listen(process.env.APPLICATION_PORT, (res, err) => {
 	if (err) onError(err)
 	console.log('Env: ' + process.env.NODE_ENV)
-	console.log('OSL BAP PORT:' + process.env.APPLICATION_PORT)
+	console.log('KT BAP PORT:' + process.env.APPLICATION_PORT)
 })
 
 const onError = (error) => {

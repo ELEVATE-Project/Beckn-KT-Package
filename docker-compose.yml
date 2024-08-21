@@ -9,9 +9,6 @@ services:
         environment:
             - ZOOKEEPER_CLIENT_PORT=2181
             - ZOOKEEPER_TICK_TIME=2000
-        networks:
-            - elevate_net
-            - elevate_elastic
         logging:
             driver: none
 
@@ -33,9 +30,6 @@ services:
             KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
         depends_on:
             - zookeeper
-        networks:
-            - elevate_net
-            - elevate_elastic
         logging:
             driver: none
 
@@ -50,9 +44,6 @@ services:
             - kafka
         ports:
             - '8083:8083'
-        networks:
-            - elevate_net
-            - elevate_elastic
         environment:
             CONNECT_BOOTSTRAP_SERVERS: 'kafka:9092'
             CONNECT_REST_ADVERTISED_HOST_NAME: kafka-connect
@@ -76,8 +67,6 @@ services:
         restart: 'always'
         ports:
             - '27017:27017'
-        networks:
-            - elevate_net
         volumes:
             - mongo-data:/data/db
         logging:
@@ -89,8 +78,6 @@ services:
         restart: 'always'
         expose:
             - '6379'
-        networks:
-            - elevate_net
         logging:
             driver: none
     elasticsearch:
@@ -104,8 +91,6 @@ services:
             - 'ES_JAVA_OPTS=-Xms1g -Xmx1g'
             - 'discovery.type=single-node'
             - 'xpack.security.enabled=false'
-        networks:
-            - elevate_elastic
         logging:
             driver: none
 
@@ -119,10 +104,36 @@ services:
             - 'ELASTICSEARCH_HOSTS=http://elasticsearch:9200'
         depends_on:
             - elasticsearch
-        networks:
-            - elevate_elastic
         logging:
             driver: none
+
+    postgres:
+        image: postgres:latest
+        attach: false
+        environment:
+            POSTGRES_DB: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        restart: unless-stopped
+        ports:
+            - '5432:5432'
+
+    pgadmin:
+        image: dpage/pgadmin4
+        attach: false
+        environment:
+            PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
+            PGADMIN_DEFAULT_PASSWORD: postgres
+            PGADMIN_LISTEN_PORT: 80
+        depends_on:
+            - postgres
+        restart: unless-stopped
+        ports:
+            - '8080:80'
+        links:
+            - postgres:postgres
 
     bap:
         build: './mentoring-bap-service/'
@@ -135,8 +146,6 @@ services:
         command: ['nodemon', 'app.js']
         depends_on:
             - redis
-        networks:
-            - elevate_net
 
     bpp:
         build: './bpp1/mentoring-bpp-service/'
@@ -150,8 +159,6 @@ services:
         depends_on:
             - redis
             - mongo
-        networks:
-            - elevate_net
 
     bpp-catalog:
         build: './bpp1/mentoring-bpp-catalog-service/'
@@ -165,9 +172,6 @@ services:
         depends_on:
             - redis
             - kafka
-        networks:
-            - elevate_net
-            - elevate_elastic
 
     bg-sim:
         build: './bg-sim/'
@@ -188,16 +192,9 @@ services:
         ports:
             - '3010:3010'
         command: ['nodemon', 'app.js']
-        networks:
-            - elevate_net
-            - elevate_elastic
 
-networks:
-    elevate_net:
-        external: false
-    elevate_elastic:
-        external: false
 volumes:
     zookeeper-data:
     kafka-data:
     mongo-data:
+    postgres_data:

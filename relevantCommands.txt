@@ -8,3 +8,91 @@ node createFulfillmentConnector.js && \
 node createProviderConnector.js && \
 node createSessionConnector.js && \
 cd ../../../../../
+
+
+
+Kibana localhost:5601
+
+GET /_cat/indices?v
+
+GET /mentoring-fulfillments/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "size": 1000
+}
+
+GET /mentoring-providers/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "size": 1000
+}
+
+GET /mentoring-agents/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "size": 1000
+}
+
+
+GET /mentoring-sessions/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "size": 1000
+}
+
+
+GET /mentoring-sessions/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "_source": ["descriptor.name"],
+  "size": 1000
+}
+
+GET /mentoring-agents/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "_source": ["person.name"],
+  "size": 1000
+}
+
+
+
+POST /mentoring-fulfillments/_delete_by_query
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+POST /mentoring-providers/_delete_by_query
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+POST /mentoring-agents/_delete_by_query
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+POST /mentoring-sessions/_delete_by_query
+{
+  "query": {
+    "match_all": {}
+  }
+}

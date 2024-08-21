@@ -12,8 +12,40 @@ const kafka = new Kafka({
 
 const producer = kafka.producer();
 
+function generateSessionTitle() {
+	const prefixes = [
+		'Mastering',
+		'Introduction to',
+		'Advanced Techniques in',
+		'The Essentials of',
+		'Getting Started with',
+		'Exploring the Basics of',
+	];
+	const subjects = ['JavaScript', 'Project Management', 'Digital Marketing', 'Data Science', 'Machine Learning'];
+	const suffixes = ['for Beginners', 'for Experts', 'for Small Businesses', 'for the 21st Century'];
+
+	// Combine random elements from each array
+	const prefix = faker.helpers.arrayElement(prefixes);
+	const subject = faker.helpers.arrayElement(subjects);
+	const suffix = faker.helpers.arrayElement(suffixes);
+
+	return `${prefix} ${subject} ${suffix}`;
+}
+
+const categoriesOptions = [
+	{ value: 'career_advice', label: 'Career Advice' },
+	{ value: 'personal_development', label: 'Personal Development' },
+	{ value: 'tech_skills', label: 'Tech Skills' },
+];
+
+const recommendedForOptions = [
+	{ value: 'students', label: 'Students' },
+	{ value: 'young_professionals', label: 'Young Professionals' },
+	{ value: 'entrepreneurs', label: 'Entrepreneurs' },
+];
+
 function generateSession() {
-	const session = {
+	return {
 		mentor: {
 			_id: faker.datatype.uuid(),
 			name: faker.name.fullName(),
@@ -38,24 +70,12 @@ function generateSession() {
 			description: faker.company.catchPhrase(),
 		},
 		_id: faker.datatype.uuid(),
-		categories: [
-			{
-				value: faker.helpers.arrayElement(['career_advice', 'personal_development', 'tech_skills']),
-				label: faker.helpers.arrayElement(['Career Advice', 'Personal Development', 'Tech Skills']),
-			},
-		],
-		title: faker.company.bsBuzz(),
+		categories: [faker.helpers.arrayElement(categoriesOptions)],
+		title: generateSessionTitle(),
 		description: faker.lorem.sentences(2),
 		image: faker.image.imageUrl(),
-		recommendedFor: [
-			{
-				value: faker.helpers.arrayElement(['students', 'young_professionals', 'entrepreneurs']),
-				label: faker.helpers.arrayElement(['Students', 'Young Professionals', 'Entrepreneurs']),
-			},
-		],
+		recommendedFor: [faker.helpers.arrayElement(recommendedForOptions)],
 	};
-
-	return session;
 }
 
 app.post('/create-session', async (req, res) => {

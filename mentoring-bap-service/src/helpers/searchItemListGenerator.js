@@ -10,14 +10,15 @@ exports.searchItemListGenerator = async (transactionId, type, fetchedItems) => {
 			const itemList = await cacheGet(`SESSION_LIST:${transactionId}`)
 			items = await Promise.all(
 				itemList.map(async (itemId) => {
-					const item = await internalRequests.catalogGET({
-						route: process.env.BAP_CATALOG_GET_SESSION_ROUTE,
-						pathParams: { sessionId: itemId },
-					})
-					return item._source
+					const item = await cacheGet(`SESSION:${itemId}`)
+					console.log('ITEM: ', item)
+					return item
 				})
 			)
 		} else items = fetchedItems
+
+		console.log('ITEMSSSSSSSSS: ', items)
+		console.log('TYPEEEEEEE: ', type)
 		if (type === 'session') {
 			return items
 		} else if (type === 'mentor') {

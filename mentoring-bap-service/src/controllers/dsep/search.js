@@ -22,17 +22,17 @@ exports.search = async (req, res) => {
 		const context = await contextBuilder(transactionId, messageId, process.env.SEARCH_ACTION)
 		const message = isMentorSearch ? searchMentorMessageDTO(mentorName) : searchSessionMessageDTO(sessionTitle)
 		const sessions = await internalRequests.catalogPOST({
-            route: process.env.BAP_CATALOG_SEARCH_SESSIONS_ROUTE,
-            body: { filters: req.body },
-        })
-        const sessionSources = sessions?sessions.map((session) => session._source):[]
-        /* console.log('SESSIONS: ', sessions)
+			route: process.env.BAP_CATALOG_SEARCH_SESSIONS_ROUTE,
+			body: { filters: req.body },
+		})
+		const sessionSources = sessions ? sessions.map((session) => session._source) : []
+		/* console.log('SESSIONS: ', sessions)
         console.log('SESSION COUNT FROM ES:', sessions.length) */
-        if (sessions && sessions.length >= process.env.BAP_MINIMUM_SESSION_COUNT_REQUIRED) {
-            const listName = type === 'session' ? 'sessions' : 'mentors'
-            const items = await searchItemListGenerator(transactionId, type, sessionSources)
+		if (sessions && sessions.length >= process.env.BAP_MINIMUM_SESSION_COUNT_REQUIRED) {
+			const listName = type === 'session' ? 'session' : 'mentor'
+			const items = await searchItemListGenerator(transactionId, type, sessionSources)
 
-            res.status(200).json({
+			res.status(200).json({
 				status: true,
 				message: 'Search Success',
 				data: {
@@ -41,6 +41,7 @@ exports.search = async (req, res) => {
 				},
 			})
 		} else {
+			console.log('HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE')
 			if (!isMentorSearch && !isSessionSearch) return failedRes('Either mentor or session name must be provided')
 			if (isMentorSearch && isSessionSearch)
 				return failedRes("Hybrid searching using both mentor and session names isn't currently supported")
@@ -53,9 +54,9 @@ exports.search = async (req, res) => {
 
 			setTimeout(async () => {
 				try {
-					const listName = type === 'session' ? 'sessions' : 'mentors'
+					const listName = type === 'session' ? 'session' : 'mentor'
 					const items = await searchItemListGenerator(transactionId, type)
-
+					console.log('HHHHHHHHHHHHHHHHHHHHH', items)
 					res.status(200).json({
 						status: true,
 						message: 'Search Success',
@@ -70,12 +71,12 @@ exports.search = async (req, res) => {
 				}
 			}, process.env.SEARCH_MINIMUM_WAIT_TIME)
 		}
-		const searchRequestBody = requestBodyDTO(context, message)
+		/* const searchRequestBody = requestBodyDTO(context, message)
 		await externalRequests.dsepPOST({
 			baseURL: process.env.BECKN_BG_URI,
 			body: searchRequestBody,
 			route: process.env.SEARCH_ROUTE,
-		})
+		}) */
 	} catch (err) {
 		console.error(err)
 	}

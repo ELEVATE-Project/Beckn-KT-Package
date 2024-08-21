@@ -12,7 +12,7 @@ RUN npm install && npm install -g nodemon@2.0.16
 COPY ./src .
 
 #Expose the application port
-EXPOSE 3015
+EXPOSE 3000
 
 #Start the application
 CMD [ "node", "app.js" ]

@@ -5,6 +5,7 @@ const bapQueries = require('@database/storage/bap/queries')
 
 exports.search = async (requestBody) => {
 	try {
+		console.log('BPP RequestBody:"', requestBody)
 		const context = requestBody.context
 		const message = requestBody.message
 		const { bap } = await bapQueries.findOrCreate({
