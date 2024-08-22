@@ -214,11 +214,11 @@ services:
             - neo4j-data:/data
 
     o-horizon-recommendation:
-        build: './o-horizon-recommendation/'
+        build: './recommendation/'
         container_name: o-horizon-recommendation
         image: o-horizon/recommendation:1.0
         volumes:
-            - ./o-horizon-recommendation/src/:/var/src
+            - ./recommendation/src/:/var/src
         ports:
             - '3020:3020'
         command: ['nodemon', 'app.js']
