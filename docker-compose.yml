@@ -143,9 +143,10 @@ services:
             - ./mentoring-bap-service/src/:/var/src
         ports:
             - '3000:3000'
-        command: ['nodemon', 'app.js']
         depends_on:
+            - kafka
             - redis
+        command: ['nodemon', 'app.js']
 
     bpp:
         build: './bpp1/mentoring-bpp-service/'
@@ -157,6 +158,7 @@ services:
             - '3001:3001'
         command: ['nodemon', 'app.js']
         depends_on:
+            - kafka
             - redis
             - mongo
 
@@ -181,6 +183,8 @@ services:
             - ./bg-sim/:/usr/src/app/
         ports:
             - '3003:3003'
+        depends_on:
+            - kafka
         command: ['nodemon', 'app.js']
 
     mentoring-sim:
@@ -191,10 +195,39 @@ services:
             - ./bpp1/mentoring-sim/:/usr/src/app/
         ports:
             - '3010:3010'
+        depends_on:
+            - kafka
         command: ['nodemon', 'app.js']
+
+    neo4j:
+        container_name: o-horizon-neo4j
+        image: 'neo4j:latest'
+        ports:
+            - '7474:7474'
+            - '7687:7687'
+        environment:
+            - NEO4J_AUTH=none
+            - NEO4J_PLUGINS=["graph-data-science"]
+            - NEO4J_dbms_security_procedures_unrestricted=gds.*
+            - NEO4J_dbms_security_procedures_allowlist=gds.*
+        volumes:
+            - neo4j-data:/data
+
+    o-horizon-recommendation:
+        build: './o-horizon-recommendation/'
+        container_name: o-horizon-recommendation
+        image: o-horizon/recommendation:1.0
+        volumes:
+            - ./o-horizon-recommendation/src/:/var/src
+        ports:
+            - '3020:3020'
+        command: ['nodemon', 'app.js']
+        depends_on:
+            - neo4j
 
 volumes:
     zookeeper-data:
     kafka-data:
     mongo-data:
     postgres_data:
+    neo4j-data:

@@ -59,8 +59,6 @@ package-lock.json
 public/assessment/web
 public/assessment/web2
 
-.env
-
 # Ignore all credentials
 generics/helpers/credentials/*
 

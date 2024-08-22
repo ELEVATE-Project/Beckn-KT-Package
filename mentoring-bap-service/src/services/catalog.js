@@ -97,12 +97,12 @@ const catalogHandler = async (providers, transactionId, bppMongoId) => {
 				}
 
 				await cacheSave(`SESSION:${itemId}`, session)
-				/* const response = await internalRequests.recommendationPOST({
+				const response = await internalRequests.recommendationPOST({
 					route: process.env.RECOMMENDATION_ADD_ITEM,
 					body: {
 						payload: session,
 					},
-				}) */
+				})
 				// Elastic Search ingestion
 				// client.index({
 				// 	index: 'item-index',
