@@ -1,4 +1,4 @@
-/* 'use strict'
+'use strict'
 const { internalRequests } = require('@helpers/requests')
 const { itemQueries } = require('@database/storage/item/queries')
 const { itemListTransformer } = require('@helpers/itemListTransformer')
@@ -36,6 +36,7 @@ const getItemPageRecommendations = async ({ itemId, type }) => {
 		})
 		if (!response.status) return false
 		const recommendedItems = response.data
+		console.log(recommendedItems)
 		const items = await Promise.all(
 			recommendedItems.map(async (item) => {
 				const itemDoc = await itemQueries.findByItemId(item.itemId)
@@ -77,4 +78,3 @@ exports.recommendationService = {
 	getItemPageRecommendations,
 	getProfilePageRecommendations,
 }
- */

@@ -97,12 +97,12 @@ const catalogHandler = async (providers, transactionId, bppMongoId) => {
 				}
 
 				await cacheSave(`SESSION:${itemId}`, session)
-				/* const response = await internalRequests.recommendationPOST({
+				const response = await internalRequests.recommendationPOST({
 					route: process.env.RECOMMENDATION_ADD_ITEM,
 					body: {
 						payload: session,
 					},
-				}) */
+				})
 				// Elastic Search ingestion
 				// client.index({
 				// 	index: 'item-index',
@@ -113,10 +113,10 @@ const catalogHandler = async (providers, transactionId, bppMongoId) => {
 					route: process.env.BAP_CATALOG_INDEX_SESSION_ROUTE,
 					body: { session, sessionId: itemId },
 				}) */
-				/* const { storedItem } = await itemQueries.findOrCreate({
+				const { storedItem } = await itemQueries.findOrCreate({
 					where: { itemId },
 					defaults: { details: JSON.stringify(session), bppMongoId },
-				}) */
+				})
 				/* if (!response.status) throw 'Neo4j Item Injection Failed' */
 				console.log('ITEM ID: ', itemId)
 				console.log('BPP MONGO ID: ', bppMongoId)

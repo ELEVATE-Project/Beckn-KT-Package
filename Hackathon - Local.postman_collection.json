@@ -1,0 +1,794 @@
+{
+	"info": {
+		"_postman_id": "eec3ace1-dada-422a-8f1e-c6b00e1c51c0",
+		"name": "Hackathon - Local",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13427084"
+	},
+	"item": [
+		{
+			"name": "bap",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Parse the JSON response",
+											"let response = pm.response.json();",
+											"",
+											"// Set the access token as an environment variable",
+											"pm.environment.set(\"access_token\", response.data.accessToken);",
+											"",
+											"// Log the token to the console for verification (optional)",
+											"console.log(\"Access Token:\", response.data.accessToken);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"joffin@tunerlabs.com\",\n    \"password\":\"testpassword\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{bap}}/user/login",
+									"host": [
+										"{{bap}}"
+									],
+									"path": [
+										"user",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Signup",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Parse the JSON response",
+											"let response = pm.response.json();",
+											"",
+											"// Set the access token as an environment variable",
+											"pm.environment.set(\"access_token\", response.data.accessToken);",
+											"",
+											"// Log the token to the console for verification (optional)",
+											"console.log(\"Access Token:\", response.data.accessToken);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"joffin1@tunerlabs.com\",\n    \"password\":\"testpassword\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{bap}}/user/signup",
+									"host": [
+										"{{bap}}"
+									],
+									"path": [
+										"user",
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Profile",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Joel\",\n    \"phone\":\"9895485555\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{bap}}/user/profile/add",
+									"host": [
+										"{{bap}}"
+									],
+									"path": [
+										"user",
+										"profile",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get User Emails",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{bap}}/user/get-user-emails",
+									"host": [
+										"{{bap}}"
+									],
+									"path": [
+										"user",
+										"get-user-emails"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Dsep",
+					"item": [
+						{
+							"name": "Search",
+							"item": [
+								{
+									"name": "Session Search By Title",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2Y1OTI3MTg3Y2YwYzc5OTQzNmM3NWYiLCJpYXQiOjE2NzcwMzgyMjksImV4cCI6MTY3NzEyNDYyOX0.bhXz3MJzG1MSjNr1mSfpi6k4afJjL-uw4u5BbyKXrY9oGxoc0W0r3Ul0lWIXYbb89se1PX1Mb2_azpfFkdnyePpsOZTDIA2pLbJyE7_gkDNbt-kfitmbDifwrR1PHwEp4Oz8aeHqDLBFmt2s6b1dzsmRzm-hC7Yxc_sIZFmfMhMGmUBKu6XSOKZ5mMwOqTw2Fk9lH3W-08WziUvIPJstvYVzPfzRrsfEwDBoe_jtyX4f_q9ng88-Im5AdOf4Y94D4_IJwymaZQ--3C9C3ohvStrmL4rJw5ecYHawmCSFO-3b5F0iiWLkj4BZIVyBMv0as4-N8bHlExwdUEwkTlzHRQ",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"sessionTitle\": \"Biology\",\n    \"type\":\"session\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3015/osl-bap/dsep/search",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3015",
+											"path": [
+												"osl-bap",
+												"dsep",
+												"search"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Session Search By Mentor Name",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2Y0Yzc0ZjNlNTEyMTM1OWI0MWU5MWIiLCJpYXQiOjE2NzY5ODYxOTEsImV4cCI6MTY3NzA3MjU5MX0.chUYeg882TyZ561Y5qp_5D2bYT-WYBcGcgnmOkvLg35ENu2Nhi0E2evXoAJFdbOIGD2CJPzmdjXf0Uzg9iuiia_I3XnmeQr85oN_YErq1Tdwo5FcSA0F7TUNKbq6O9CVTPSAigI2rJtJ4LAGkpQxqfMDq8c_7llvr24xSXfbu_vax4hmWKfJLZ5bEq8S1_fCD-6ofB1A7flmwRHWs8ruWAhlOzAZXefXLe5KXF9oubZ3EEELrDjTpZMQJ5aLQP2GJM77Qgq5mNA-RRpa6lKFoXv6D5vlVVFadoEwNgRDrVU29iHfUivxx6AP8f8G0DM4UT96fdz3xw418SZ9Xw0a7w",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"mentorName\": \"mentor\",\n    \"type\":\"session\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{bap}}/dsep/search",
+											"host": [
+												"{{bap}}"
+											],
+											"path": [
+												"dsep",
+												"search"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Mentor Search By Topic",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2Y0Yzc0ZjNlNTEyMTM1OWI0MWU5MWIiLCJpYXQiOjE2NzY5ODYxOTEsImV4cCI6MTY3NzA3MjU5MX0.chUYeg882TyZ561Y5qp_5D2bYT-WYBcGcgnmOkvLg35ENu2Nhi0E2evXoAJFdbOIGD2CJPzmdjXf0Uzg9iuiia_I3XnmeQr85oN_YErq1Tdwo5FcSA0F7TUNKbq6O9CVTPSAigI2rJtJ4LAGkpQxqfMDq8c_7llvr24xSXfbu_vax4hmWKfJLZ5bEq8S1_fCD-6ofB1A7flmwRHWs8ruWAhlOzAZXefXLe5KXF9oubZ3EEELrDjTpZMQJ5aLQP2GJM77Qgq5mNA-RRpa6lKFoXv6D5vlVVFadoEwNgRDrVU29iHfUivxx6AP8f8G0DM4UT96fdz3xw418SZ9Xw0a7w",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"sessionTitle\": \"ClusterNumber1\",\n    \"type\":\"mentor\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{bap}}/dsep/search",
+											"host": [
+												"{{bap}}"
+											],
+											"path": [
+												"dsep",
+												"search"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Mentor Search By Mentor Name",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2Y0Yzc0ZjNlNTEyMTM1OWI0MWU5MWIiLCJpYXQiOjE2NzY5ODYxOTEsImV4cCI6MTY3NzA3MjU5MX0.chUYeg882TyZ561Y5qp_5D2bYT-WYBcGcgnmOkvLg35ENu2Nhi0E2evXoAJFdbOIGD2CJPzmdjXf0Uzg9iuiia_I3XnmeQr85oN_YErq1Tdwo5FcSA0F7TUNKbq6O9CVTPSAigI2rJtJ4LAGkpQxqfMDq8c_7llvr24xSXfbu_vax4hmWKfJLZ5bEq8S1_fCD-6ofB1A7flmwRHWs8ruWAhlOzAZXefXLe5KXF9oubZ3EEELrDjTpZMQJ5aLQP2GJM77Qgq5mNA-RRpa6lKFoXv6D5vlVVFadoEwNgRDrVU29iHfUivxx6AP8f8G0DM4UT96fdz3xw418SZ9Xw0a7w",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"mentorName\": \"Mentor\",\n    \"type\":\"mentor\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{bap}}/dsep/search",
+											"host": [
+												"{{bap}}"
+											],
+											"path": [
+												"dsep",
+												"search"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Select",
+							"item": [
+								{
+									"name": "Select",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2Y0Yzc0ZjNlNTEyMTM1OWI0MWU5MWIiLCJpYXQiOjE2NzY5ODYxOTEsImV4cCI6MTY3NzA3MjU5MX0.chUYeg882TyZ561Y5qp_5D2bYT-WYBcGcgnmOkvLg35ENu2Nhi0E2evXoAJFdbOIGD2CJPzmdjXf0Uzg9iuiia_I3XnmeQr85oN_YErq1Tdwo5FcSA0F7TUNKbq6O9CVTPSAigI2rJtJ4LAGkpQxqfMDq8c_7llvr24xSXfbu_vax4hmWKfJLZ5bEq8S1_fCD-6ofB1A7flmwRHWs8ruWAhlOzAZXefXLe5KXF9oubZ3EEELrDjTpZMQJ5aLQP2GJM77Qgq5mNA-RRpa6lKFoXv6D5vlVVFadoEwNgRDrVU29iHfUivxx6AP8f8G0DM4UT96fdz3xw418SZ9Xw0a7w",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"itemId\":\"7b2ccdcd-e2d3-4f13-a45d-2a6b24a492b0\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{bap}}/dsep/select",
+											"host": [
+												"{{bap}}"
+											],
+											"path": [
+												"dsep",
+												"select"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Init",
+							"item": [
+								{
+									"name": "Init",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2ZiNDAyYjdhYjgyNGExZjg0OTA5MjMiLCJpYXQiOjE2Nzc0MTAzNDcsImV4cCI6MTY3NzQ5Njc0N30.XdXD6NX6G903MWxMYnF2pZu18oYwOxbPBh539sPl1JSBQt_AFMUUtKp-WNSj_aPem3JZvcb-UWPMRIWwHsQftLGg2b0UqO4-mBqwPErzNCb805HeN3Y1oXFGP4gwPMIvr-kfKPCkcU1blVXV5QJhUpFw00ga0vPi9WwO6Ctc28G3Ct50GVaWkhmmP73MYC1Ng8pUibDw07sd6gjKmt2f8gDfNYdKlgM1kzX6qNkdLjjkl3y0zVms8AbcgT9EkiAOSqHcnvSaQlDa05WN7MROublvzT3KhpFHKRi7BhyMEgZTD9qgoe3h6qGzqvo5LbtLj4Y1aPobqO6MGRSIvUH7aQ",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"itemId\":\"63f9edac23df0828569383d3\",\n    \"fulfillmentId\":\"b381aa0c-ce48-43e8-ad99-652f502c2af4\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3015/osl-bap/dsep/init",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3015",
+											"path": [
+												"osl-bap",
+												"dsep",
+												"init"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Confirm",
+							"item": [
+								{
+									"name": "Confirm Mentor",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2ZiNDAyYjdhYjgyNGExZjg0OTA5MjMiLCJpYXQiOjE2Nzc0MTA3MzgsImV4cCI6MTY3NzQ5NzEzOH0.nUFcu7sSY_vrXflT-ohPAjL6mjIc30X_yA_veup2Ql0MNfIhDHc2dBnUEFPgFITUQiYwlrMtGTkZL8KFfSkvkRRQ3PidDTHPw9TmospilM10Dx3K4FnlTse_8MeDERgifSrHEJnYD2iG4Hli0T64rBqiiO1hj_qZN8CqeIispgrCKQJJ-SFx4ZQVe1Ek--PdZZdB6eYxMMwYMX6R5xJkWVdoPcTS07kEGGwf4zuGqvuX3iUhrhRDlQ-Jk0A9h0mJS8woegJUF_I8VpV4VFtD4LOr1_oxjqz0uDyAH62msB29u1Im5CgHdn2YQAlaf8BTbBIVe4EtnLpurw0-k70Q9A",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"itemId\":\"63f9edac23df0828569383d3\",\n    \"fulfillmentId\":\"b381aa0c-ce48-43e8-ad99-652f502c2af4\",\n    \"type\":\"mentor\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{bap}}/dsep/confirm",
+											"host": [
+												"{{bap}}"
+											],
+											"path": [
+												"dsep",
+												"confirm"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Confirm Session",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2ZiNDAyYjdhYjgyNGExZjg0OTA5MjMiLCJpYXQiOjE2Nzc0MTAzNDcsImV4cCI6MTY3NzQ5Njc0N30.XdXD6NX6G903MWxMYnF2pZu18oYwOxbPBh539sPl1JSBQt_AFMUUtKp-WNSj_aPem3JZvcb-UWPMRIWwHsQftLGg2b0UqO4-mBqwPErzNCb805HeN3Y1oXFGP4gwPMIvr-kfKPCkcU1blVXV5QJhUpFw00ga0vPi9WwO6Ctc28G3Ct50GVaWkhmmP73MYC1Ng8pUibDw07sd6gjKmt2f8gDfNYdKlgM1kzX6qNkdLjjkl3y0zVms8AbcgT9EkiAOSqHcnvSaQlDa05WN7MROublvzT3KhpFHKRi7BhyMEgZTD9qgoe3h6qGzqvo5LbtLj4Y1aPobqO6MGRSIvUH7aQ",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"itemId\":\"63f9ed2c23df08285693801d\",\n    \"fulfillmentId\":\"27a9ca55-877b-4601-a009-b83262b81639\",\n    \"type\":\"session\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{bap}}/dsep/confirm",
+											"host": [
+												"{{bap}}"
+											],
+											"path": [
+												"dsep",
+												"confirm"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Consumer",
+					"item": [
+						{
+							"name": "Recommendations",
+							"item": [
+								{
+									"name": "Get Recommendations (Sessions)",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{access_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"type\":\"session\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{bap}}/consumer/get-recommendations",
+											"host": [
+												"{{bap}}"
+											],
+											"path": [
+												"consumer",
+												"get-recommendations"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Profile Page Recommendations",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{access_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"type\":\"session\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{bap}}/consumer/get-profile-page-recommendations",
+											"host": [
+												"{{bap}}"
+											],
+											"path": [
+												"consumer",
+												"get-profile-page-recommendations"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Item Page Recommendations",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NDM0Mzc2M2M0NzY1ZDQ4NzY1MGUyNTgiLCJpYXQiOjE2ODExNDQxODIsImV4cCI6MTY4MTIzMDU4Mn0.8sB6u4DaZUCBl5VrhrW6Y8LWEgdzKxh2M28bqc_P3G1j_3-SZWbA315nOKNy2AAD6jSr0z7lnkzg046AXEAGW3ovGHzO82eL4NQB73NEGdqEvnERJ_ONN5tJjuNvFum_9W5U96NP2ICSI8TqD2quuDnPVyGC-aGECaDlXkXIsXrYWEvHQUSWJbD1A1_8-Nnr5Dy0wYBPeS8-klfXu9zQSD3LwdhDMLRU1JCTun77j4KuI5BxwOpPaMq3MgW_L43HD88qMWjHxzou231vLj29E_eVFvBFsdq3M9It5ZwPsI0ekfwlyNPJrItBp2fuEvbs_msTP7ShTQlUwP7aSuA8cQ",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"itemId\": \"66c71c251c086fc9d8e9587a\",\n    \"type\": \"session\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{bap}}/consumer/get-item-page-recommendations",
+											"host": [
+												"{{bap}}"
+											],
+											"path": [
+												"consumer",
+												"get-item-page-recommendations"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Recommendations (Mentors)",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{access_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"type\":\"mentor\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{bap}}/consumer/get-recommendations",
+											"host": [
+												"{{bap}}"
+											],
+											"path": [
+												"consumer",
+												"get-recommendations"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get Confirmed List",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{bap}}/consumer/get-confirmed-list",
+									"host": [
+										"{{bap}}"
+									],
+									"path": [
+										"consumer",
+										"get-confirmed-list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Mark Attendance Completed",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"orderId\":\"28475ae8-3cf8-46ea-a10a-12240ccf48f3\",\n    \"rating\":\"5\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{bap}}/consumer/mark-attendance-completed",
+									"host": [
+										"{{bap}}"
+									],
+									"path": [
+										"consumer",
+										"mark-attendance-completed"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Graph",
+					"item": [
+						{
+							"name": "Recompute Recommendations",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{bap}}/graph/recompute-recommendations",
+									"host": [
+										"{{bap}}"
+									],
+									"path": [
+										"graph",
+										"recompute-recommendations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Recompute Content Recommendations",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{bap}}/graph/recompute-content-recommendations",
+									"host": [
+										"{{bap}}"
+									],
+									"path": [
+										"graph",
+										"recompute-content-recommendations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Recompute PageRank",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{bap}}/graph/recompute-page-rank",
+									"host": [
+										"{{bap}}"
+									],
+									"path": [
+										"graph",
+										"recompute-page-rank"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Trigger AutoSearch",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{bap}}/graph/trigger-auto-search?command=start",
+									"host": [
+										"{{bap}}"
+									],
+									"path": [
+										"graph",
+										"trigger-auto-search"
+									],
+									"query": [
+										{
+											"key": "command",
+											"value": "start"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Set Unique Constraints",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{bap}}/set-unique-constraints",
+									"host": [
+										"{{bap}}"
+									],
+									"path": [
+										"set-unique-constraints"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete All Nodes",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{bap}}/graph/delete-all-nodes",
+									"host": [
+										"{{bap}}"
+									],
+									"path": [
+										"graph",
+										"delete-all-nodes"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

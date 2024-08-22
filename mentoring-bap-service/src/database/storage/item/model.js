@@ -14,7 +14,7 @@ const itemSchema = new mongoose.Schema({
 		type: String,
 	},
 	bppMongoId: {
-		type: ObjectId,
+		type: String,
 	},
 })
 itemSchema.plugin(mongooseLeanGetter)
