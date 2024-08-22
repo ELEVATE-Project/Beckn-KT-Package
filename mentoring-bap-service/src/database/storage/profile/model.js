@@ -5,7 +5,7 @@ const { ObjectId } = require('mongodb')
 
 const profileSchema = new mongoose.Schema({
 	userId: {
-		type: ObjectId,
+		type: String,
 		unique: true,
 		required: true,
 	},

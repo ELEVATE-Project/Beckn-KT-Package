@@ -12,11 +12,11 @@ const STATUS = {
 
 const itemAttendanceSchema = new mongoose.Schema({
 	userMongoId: {
-		type: ObjectId,
+		type: String,
 		required: true,
 	},
 	itemMongoId: {
-		type: ObjectId,
+		type: String,
 		required: true,
 	},
 	orderId: {

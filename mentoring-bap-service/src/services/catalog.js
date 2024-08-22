@@ -113,10 +113,10 @@ const catalogHandler = async (providers, transactionId, bppMongoId) => {
 					route: process.env.BAP_CATALOG_INDEX_SESSION_ROUTE,
 					body: { session, sessionId: itemId },
 				}) */
-				/* const { storedItem } = await itemQueries.findOrCreate({
+				const { storedItem } = await itemQueries.findOrCreate({
 					where: { itemId },
 					defaults: { details: JSON.stringify(session), bppMongoId },
-				}) */
+				})
 				/* if (!response.status) throw 'Neo4j Item Injection Failed' */
 				console.log('ITEM ID: ', itemId)
 				console.log('BPP MONGO ID: ', bppMongoId)

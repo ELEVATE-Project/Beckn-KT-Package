@@ -36,6 +36,7 @@ const getItemPageRecommendations = async ({ itemId, type }) => {
 		})
 		if (!response.status) return false
 		const recommendedItems = response.data
+		console.log(recommendedItems)
 		const items = await Promise.all(
 			recommendedItems.map(async (item) => {
 				const itemDoc = await itemQueries.findByItemId(item.itemId)
